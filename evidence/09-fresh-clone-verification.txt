@@ -1,0 +1,43 @@
+Unauthenticated fresh clone of main
+Commit: 44afaae2e3e00614fb77dd6dbb771907d7149fb7
+Python: 3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]
+Command: /Users/santhoshallada/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m unittest discover -s tests -v
+test_cli_express_lifecycle_and_help (test_express.ExpressTests.test_cli_express_lifecycle_and_help) ... ok
+test_discount_threshold_and_rounding_exclude_delivery (test_express.ExpressTests.test_discount_threshold_and_rounding_exclude_delivery) ... ok
+test_express_fee_never_waived (test_express.ExpressTests.test_express_fee_never_waived) ... ok
+test_invalid_express_requests_preserve_state (test_express.ExpressTests.test_invalid_express_requests_preserve_state) ... ok
+test_lifecycle_snapshot_history_and_repeat_cancel (test_express.ExpressTests.test_lifecycle_snapshot_history_and_repeat_cancel) ... ok
+test_menu_decline_invalid_and_defaults (test_express.ExpressTests.test_menu_decline_invalid_and_defaults) ... ok
+test_menu_quote_place_retrieve_cancel (test_express.ExpressTests.test_menu_quote_place_retrieve_cancel) ... ok
+test_official_examples_quote_and_place (test_express.ExpressTests.test_official_examples_quote_and_place) ... ok
+test_quote_does_not_reserve_and_place_revalidates (test_express.ExpressTests.test_quote_does_not_reserve_and_place_revalidates) ... ok
+test_cli_defaults_and_invalid_exit (test_regression.RegressionTests.test_cli_defaults_and_invalid_exit) ... ok
+test_duplicate_lines_cannot_exceed_combined_stock (test_regression.RegressionTests.test_duplicate_lines_cannot_exceed_combined_stock) ... ok
+test_half_cent_rounding (test_regression.RegressionTests.test_half_cent_rounding) ... ok
+test_history_and_prices_survive_catalog_changes_and_cancel (test_regression.RegressionTests.test_history_and_prices_survive_catalog_changes_and_cancel) ... ok
+test_invalid_first_order_does_not_consume_id (test_regression.RegressionTests.test_invalid_first_order_does_not_consume_id) ... ok
+test_invalid_requests_preserve_existing_state (test_regression.RegressionTests.test_invalid_requests_preserve_existing_state) ... ok
+test_last_stock_and_quantity_limits (test_regression.RegressionTests.test_last_stock_and_quantity_limits) ... ok
+test_menu_defaults_decline_and_confirmation (test_regression.RegressionTests.test_menu_defaults_decline_and_confirmation) ... ok
+test_menu_errors_and_exit (test_regression.RegressionTests.test_menu_errors_and_exit) ... ok
+test_normal_placement_and_history (test_regression.RegressionTests.test_normal_placement_and_history) ... ok
+test_placement_rechecks_stock_after_quote (test_regression.RegressionTests.test_placement_rechecks_stock_after_quote) ... ok
+test_quote_and_order_agree (test_regression.RegressionTests.test_quote_and_order_agree) ... ok
+test_quote_has_no_side_effects (test_regression.RegressionTests.test_quote_has_no_side_effects) ... ok
+test_repeated_cancellation_is_idempotent (test_regression.RegressionTests.test_repeated_cancellation_is_idempotent) ... ok
+test_standard_delivery_boundary (test_regression.RegressionTests.test_standard_delivery_boundary) ... ok
+test_student_discount_at_threshold (test_regression.RegressionTests.test_student_discount_at_threshold) ... ok
+test_student_discount_below_and_above_threshold (test_regression.RegressionTests.test_student_discount_below_and_above_threshold) ... ok
+test_unknown_order_and_malformed_save (test_regression.RegressionTests.test_unknown_order_and_malformed_save) ... ok
+test_valid_duplicate_lines (test_regression.RegressionTests.test_valid_duplicate_lines) ... ok
+test_cancel_order_restores_stock (test_smoke.OrderSmokeTests.test_cancel_order_restores_stock) ... ok
+test_order_can_be_reopened (test_smoke.OrderSmokeTests.test_order_can_be_reopened) ... ok
+test_regular_pickup_quote (test_smoke.OrderSmokeTests.test_regular_pickup_quote) ... ok
+test_student_delivery_quote (test_smoke.OrderSmokeTests.test_student_delivery_quote) ... ok
+
+----------------------------------------------------------------------
+Ran 32 tests in 0.489s
+
+OK
+
+Exit: 0

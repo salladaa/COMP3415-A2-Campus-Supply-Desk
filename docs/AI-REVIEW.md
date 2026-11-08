@@ -2,7 +2,7 @@
 
 Santhosh Allada | Student ID: 1279244 | COMP 3415 Assignment 2
 
-Source: selected exchanges from the Codex conversation on 8 November 2026. The quoted questions and responses preserve the actual wording, with text formatting normalized. This is a selected interaction record, not a full chat export. The first two recommendations were presented during implementation; the `isinstance` candidate was explicitly presented for evaluation during final review, with the boolean caveat disclosed at that time. It was not an earlier adopted change or a concealed production defect.
+Source: selected exchanges from the Codex conversation on 8 November 2026. The wording pasted for the third rejection was drafted by Claude; this was confirmed by the visible Claude conversation during the final submission check. It must not be represented as independently written student reasoning. The quoted questions and responses preserve the actual wording, with text formatting normalized. This is a selected interaction record, not a full chat export. The first two recommendations were presented during implementation; the `isinstance` candidate was explicitly presented for evaluation during final review, with the boolean caveat disclosed at that time. It was not an earlier adopted change or a concealed production defect.
 
 Final selection: **Accept, Modify, Reject**. Examples 1 and 2 occurred during implementation. Example 3 is a new technical candidate evaluated during final review on 8 November 2026. It is not represented as an earlier development interaction. The previous process-oriented third example is retained in [AI-REVIEW-HISTORY.md](AI-REVIEW-HISTORY.md) but is not one of the report's three examples.
 
@@ -34,7 +34,7 @@ Actual candidate presented during final review:
 Actual decision question after the experiment:
 > For the replacement Task 6 example, do you Accept, Modify, or Reject the candidate change from `type(quantity) is not int` to `not isinstance(quantity, int)`? In a temporary copy, it accepted quantity=True as one notebook (500 cents), although the specification forbids booleans. Existing validation tests failed; accepting the invalid placement also changed saved state and caused later checks to fail. The real application remains unchanged. Please give your decision and one sentence explaining why.
 
-Actual response (including follow-up guidance):
+Response pasted by the user (Claude-drafted wording, including follow-up guidance):
 > Reject. bool is a subclass of int in Python, so isinstance(True, int) is True, which is why the change let quantity=True through as one notebook. The exact check type(quantity) is not int is what rejects booleans, as the spec requires, and your temporary-copy test failures confirm it.
 >
 > For the report, I’d frame this as a rejection of an AI suggestion that looks cleaner and more idiomatic but is wrong. Your evidence is strong because you ran it: the quantity=True result (500 cents), the failing validation tests, and the changed saved state. Check that the saved state change you saw is what the later failures trace back to, and write the justification in your own words. Also state that the real application was left unchanged and that you kept the original check.
@@ -46,3 +46,10 @@ Evidence: [complete temporary-copy run and focused probe](../evidence/07-quantit
 Observed result: 32 test methods ran; 28 failed assertions were reported across two parameterized methods. The initial failures show ValueError was not raised for True in quote/place. The saved-byte differences show next_order_number changed from 2 to 3 after the accepted invalid placement. Later subcases compare against the original save and therefore fail; the last successful placement receives ORD-0003 instead of ORD-0002. These are cascading consequences of the same boolean-validation defect, not 28 independent defects. A focused probe separately reports `isinstance(True, int): True`, accepted boolean quantity True, and total 500 cents.
 
 Action: REJECT candidate, retain the exact-type check in supplydesk/service.py. The final production suite passes 32 tests; see evidence/08-submission-verification.txt. No candidate code is committed to the application.
+
+
+## Pre-submission attribution check
+
+The ZIP and repository preserve the actual text pasted into Codex. However, the final browser check showed that the third response had been drafted by Claude. After this was pointed out, the user pasted a second Claude explanation, including its sentence that it could not serve as the user's own confirmation. No independent personal test run or independently worded explanation is claimed. The recorded selection remains Reject; the report now explicitly identifies the explanation as AI-assisted. The technical probe and automated tests were run by Codex, not independently by the student. The user should review and confirm their understanding before submitting.
+
+The separate fresh clone check used CPython 3.12.14 and passed all 32 production tests on main at 44afaae2e3e00614fb77dd6dbb771907d7149fb7. The full output is included as evidence/09-fresh-clone-verification.txt. Later attribution-only changes do not alter application or test files.

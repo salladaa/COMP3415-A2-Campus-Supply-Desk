@@ -150,11 +150,11 @@ Evidence/action: only handle_quote_or_place() and handle_cancellation() were int
 
 ## Recommendation 3 - REJECT
 AI candidate: simplify quantity validation from type(quantity) is not int to not isinstance(quantity, int). This candidate was evaluated in a temporary copy during final review, not applied to the application.
-My decision: Reject. In Python, bool is a subclass of int, so isinstance(True, int) is True. The proposed check accepted quantity=True as one notebook, although the specification explicitly forbids boolean quantities. I kept the exact-type check because it enforces that rule.
+Recorded decision: Reject, using an explanation drafted with Claude and pasted into the interaction record. Python treats bool as a subclass of int, so isinstance(True, int) is True. The candidate accepted True as one notebook, violating the specification. The exact-type check was retained. The experiment was run by Codex; no independent personal test run is claimed.
 Evidence/action: evidence/07-quantity-candidate.txt records the modified-copy run and focused probe: True was accepted and priced at 500 cents. The invalid-request tests failed, including quote and placement checks. The accepted invalid placement saved an additional order; later assertions then detected altered saved bytes and the wrong next ID. These are cascading effects of one defect. The temporary copy was discarded; the application retained its original check and passes 32 tests. evidence/evaluate_quantity_check.py reproduces the experiment.
 
 ## Repository and reproducibility
 Repository: https://github.com/salladaa/COMP3415-A2-Campus-Supply-Desk
 The completed work is on main, the default branch, so an ordinary clone contains the final application, tests, and report. Application/test commit: 70aadbe1b8bf33ee7b6e54fab99e2582f6615a50. Later commits add documentation and the isolated review experiment without changing those files. Original: assignment-starter / 82ed75e. Stages: tests 8c763c8; refactor 54648e5; fixes a9ddcaf; prediction 4b6a209; CR-01 70aadbe.
 
-With Python 3.10+, run python -m unittest discover -s tests -v from the repository root. Expected: 32 tests, OK. Final revision evidence is evidence/08-submission-verification.txt; earlier verification remains in log 06. Tests use temporary state; the supplied scope limits remain unchanged.
+Run python -m unittest discover -s tests -v with Python 3.10+. Expected: 32 tests, OK. Logs 08 and 09 record final verification and a credential-free fresh clone check.

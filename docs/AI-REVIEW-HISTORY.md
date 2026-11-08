@@ -1,7 +1,5 @@
 # AI interaction and student judgment record
 
-This file preserves the three recommendations actually presented in the Codex chat on 2026-11-08. It is an AI-use record, not a claim of independent student authorship. The student reported that Checkpoint A had been submitted and that the instructor requested AI disclosure in comments. The final submission must retain the Task 6 record required by the handout.
-
 ## 1. Shared validation/pricing
 Recommendation: Extract one shared request-validation/pricing helper used by quote() and place_order(), passing in the state already loaded for that operation.
 Evidence: starter service.py repeats validation and pricing in both methods. test_quote_and_order_agree checks items and totals; test_placement_rechecks_stock_after_quote checks fresh validation.

@@ -214,3 +214,29 @@ These commands use the same orders and stock as the interactive menu opened with
 python -m supplydesk --help
 python -m supplydesk quote --help
 ```
+
+## 7. Express delivery (CR-01)
+
+Choose `express` in the menu or pass `--fulfillment express` to `quote` or `place`.
+Express always costs **CAD $12.00 (1200 cents)**, even when standard delivery would be free.
+Student discounts apply only to merchandise. Pickup remains free; `delivery` means standard
+shipping, CAD $6.00 unless merchandise after discount is at least CAD $100.00.
+Defaults remain regular customer and pickup. No addresses, delivery-time guarantees or payments are involved.
+
+```sh
+python -m supplydesk quote --customer student --fulfillment express --item hoodie:2
+python -m supplydesk place --customer regular --fulfillment express --item notebook:2
+```
+
+Expected totals: 8400 cents for the student quote; 2200 cents for the notebook order.
+A regular order of three hoodies totals 12000 cents with standard delivery and 13200 with express.
+Express order details and prices remain recorded through retrieval, reopening, and cancellation.
+
+### Assignment verification
+
+The expanded suite has 32 tests (including parameterized subcases), covering service, real CLI
+subprocesses and scripted terminal menu sessions. Run the same unittest discovery command above.
+The four starter tests remain unchanged. All tests use temporary data files.
+See [test evidence](evidence/README.md), [separate defect fixes](docs/DEFECTS.md),
+[CR-01 prediction](docs/CR01-PREDICTION.md), and [AI judgment record](docs/AI-REVIEW.md).
+The original starter is preserved by the `assignment-starter` Git tag.

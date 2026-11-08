@@ -25,3 +25,17 @@ Student decision (Accept / Modify / Reject): PENDING.
 Student technical reasoning: PENDING.
 
 The actual request to the student was: “Do you Accept, Modify, or Reject this recommendation, and why?” for each recommendation. For #2 the question referred to the broad recommendation and stated the narrower extraction would be used for the draft. The student was reminded that the three decisions must span at least two categories and must be based on their own reasoning. Answers remain pending; these placeholders are not fabricated student judgments. Preserve/export this chat with submission comments as additional interaction evidence.
+
+## Actual student replies received
+
+1. “i accept it” — ACCEPT is recorded; technical reasoning is still requested.
+2. “sure which ever is better” — implementation discretion granted, but no decision category or technical reasoning supplied.
+3. “go ahead” — implementation authorized, but no explicit decision category or technical reasoning supplied.
+
+A follow-up requested the student's own reasons and explicit categories. No category is inferred for #2 or #3. The two-category requirement remains pending.
+
+## Actual implementation/evidence
+
+1. Shared OrderService._prepare_quote implemented, taking already-loaded state. quote and placement each reload state; no stale quote is used for placement. Existing items/prices agree in tests.
+2. Only handle_quote_or_place and handle_cancellation were extracted; short catalog/history/lookup branches remain inline. The baseline menu tests still pass.
+3. Refactoring commit 54648e5 retains the same 5 failed assertions as baseline; defect-fix commit a9ddcaf makes all 23 tests pass. The CR-01 suite then passes 32 tests. No failed expectation was changed to conceal a defect.

@@ -8,3 +8,5 @@
 5. The report describes application/test commit 70aadbe1b8bf33ee7b6e54fab99e2582f6615a50. Later documentation/experiment commits do not change the application or suite. Starter tag: assignment-starter.
 6. Submit the PDF, public repository URL, test evidence and Task 6 interaction record through MyCourseLink as instructed. General disclosure text is provided separately in docs/SUBMISSION-COMMENTS.txt; no email or course submission has been sent.
 7. docs/EXPLANATION-GUIDE.md provides a short walkthrough for explaining the implementation and evidence. It supplements, rather than substitutes for, reviewing the code yourself.
+
+8. Upload output/submission/COMP3415-A2-AI-Use-Record.zip as the separate AI-use record item. It includes the actual selected exchanges, decisions, historical context, and supporting test logs. The PDF also links directly to docs/AI-REVIEW.md on main.

@@ -1,5 +1,9 @@
 # Task 6: interaction record and decisions
 
+Santhosh Allada | Student ID: 1279244 | COMP 3415 Assignment 2
+
+Source: selected exchanges from the Codex conversation on 8 November 2026. The quoted questions and responses preserve the actual wording, with text formatting normalized. This is a selected interaction record, not a full chat export. The first two recommendations were presented during implementation; the `isinstance` candidate was explicitly presented for evaluation during final review, with the boolean caveat disclosed at that time. It was not an earlier adopted change or a concealed production defect.
+
 Final selection: **Accept, Modify, Reject**. Examples 1 and 2 occurred during implementation. Example 3 is a new technical candidate evaluated during final review on 8 November 2026. It is not represented as an earlier development interaction. The previous process-oriented third example is retained in [AI-REVIEW-HISTORY.md](AI-REVIEW-HISTORY.md) but is not one of the report's three examples.
 
 ## 1. Shared validation/pricing - ACCEPT

@@ -1,6 +1,7 @@
 """Render the assignment report; reportlab is an authoring-only dependency."""
 from pathlib import Path
 from html import escape
+import re
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_LEFT
@@ -29,7 +30,9 @@ for page_index, page in enumerate(source.read_text().split('---PAGE---')):
                 style='SectionReport'; text=text[3:]
             elif text.startswith('# '):
                 style='TitleReport'; text=text[2:]
-            story.append(Paragraph(escape(text).replace('\n','<br/>'),styles[style]))
+            formatted = escape(text).replace('\n','<br/>')
+            formatted = re.sub(r'https://[^ <]+', lambda m: '<link href="' + m.group(0) + '" color="#176b80">' + m.group(0) + '</link>', formatted)
+            story.append(Paragraph(formatted,styles[style]))
 
 def footer(canvas, doc):
     canvas.saveState()

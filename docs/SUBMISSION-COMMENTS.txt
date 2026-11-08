@@ -3,9 +3,9 @@ Submission comments / email disclosure
 I used Codex (generative AI) to help review and format the Checkpoint A material, and for assistance with testing, diagnosis, refactoring, debugging, CR-01 implementation, and final report preparation. The execution evidence includes checks performed with Codex. My evaluations of three recommendations are included in Task 6; the supporting interaction record is linked below.
 
 AI-use record:
-https://github.com/salladaa/COMP3415-A2-Campus-Supply-Desk/blob/codex/software-rescue/docs/AI-REVIEW.md
+https://github.com/salladaa/COMP3415-A2-Campus-Supply-Desk/blob/main/docs/AI-REVIEW.md
 
-Completed assignment branch:
-https://github.com/salladaa/COMP3415-A2-Campus-Supply-Desk/tree/codex/software-rescue
+Completed assignment repository (main):
+https://github.com/salladaa/COMP3415-A2-Campus-Supply-Desk
 
 The newly formatted Checkpoint A PDF is a revised copy of the material shared for review; it is not a replacement for the version already submitted on MyCourseLink.

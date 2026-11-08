@@ -1,4 +1,4 @@
-"""Render the review report; reportlab is an authoring-only dependency."""
+"""Render the assignment report; reportlab is an authoring-only dependency."""
 from pathlib import Path
 from html import escape
 from reportlab.lib import colors
@@ -37,7 +37,7 @@ def footer(canvas, doc):
     canvas.line(44,43,568,43)
     canvas.setFont('Helvetica',8)
     canvas.setFillColor(colors.HexColor('#506277'))
-    canvas.drawString(44,30,'COMP 3415 | Software Rescue Mission | Review draft')
+    canvas.drawString(44,30,'COMP 3415 | Software Rescue Mission')
     canvas.drawRightString(568,30,f'{doc.page}')
     canvas.restoreState()
 

@@ -1,15 +1,15 @@
 # Software Rescue Mission
 ## COMP 3415 | Assignment 2 | Santhosh Allada
-Review draft - 8 November 2026. Tasks 1-6 are supported by source references, committed stages, and executable tests. The student will review and submit the PDF through MyCourseLink.
+8 November 2026. This report explains the original system, testing strategy, five diagnoses, three refactorings, express delivery change, and engineering judgments in Tasks 1-6.
 
 Repository: https://github.com/salladaa/COMP3415-A2-Campus-Supply-Desk
-Review branch: codex/software-rescue. Application and test version described: 70aadbe1b8bf33ee7b6e54fab99e2582f6615a50. Later report-only commits do not change that application version.
-Original starter: 82ed75e0714e50c086a13ee491f51b349814d8a4, preserved as assignment-starter. The checkout was clean, with one starter commit and no pre-existing local edits. The unrelated hospital repository was not changed.
+Submission branch: main (the repository default). Application and test version described: 70aadbe1b8bf33ee7b6e54fab99e2582f6615a50. Later documentation and experiment commits do not change that application or its test suite.
+Original starter: 82ed75e0714e50c086a13ee491f51b349814d8a4, preserved as assignment-starter. The checkout was clean, with one starter commit and no pre-existing local edits.
 
 ## 1. System understanding
 Campus Supply Desk is a Python terminal application for viewing campus products, obtaining quotes, placing orders, viewing history, retrieving an order, and cancelling it. Users can choose an interactive menu or individual commands. Quotes calculate prices without reserving inventory or writing a save file. Placement validates a request, deducts stock, assigns an order ID, and saves an order snapshot. Monetary values are integer Canadian cents; the menu displays dollars.
 
-The original supplydesk/cli.py defines parse_item(), build_parser(), and main() (lines 11-67). It converts PRODUCT_ID:QUANTITY text into a request, applies regular/pickup defaults, dispatches service calls, and prints JSON. With no command, main() launches the menu. supplydesk/menu.py defines read_request(), show_order(), and run_menu() (original lines 25-89); these collect input, display prices, ask for confirmation, and recover from input errors.
+The original supplydesk/cli.py defines parse_item(), build_parser(), and main() (lines 11-67). It converts PRODUCT_ID:QUANTITY text into a request, applies regular/pickup defaults, dispatches service calls, and prints JSON. With no command, main() launches the menu. supplydesk/menu.py defines read_request(), show_order(), and run_menu() (original lines 15-89); these collect input, display prices, ask for confirmation, and recover from input errors.
 
 OrderService in supplydesk/service.py (original lines 6-148) owns validation, pricing, stock changes, placement, history, lookup, and cancellation. JsonStore in supplydesk/storage.py (lines 7-29) loads JSON state or initializes it from catalog.json and writes it after a mutation. tests/test_smoke.py contains the four supplied tests.
 
@@ -22,16 +22,16 @@ Source references throughout distinguish the original tag from the final applica
 # 2. Testing strategy and baseline
 All tests run in isolated temporary directories. No ordinary saved orders are modified. The runtime was CPython 3.12.14; the host's default Python 3.9.6 was not used because the README requires 3.10+. The application needs no third-party runtime packages.
 
-Command at every stage: python -m unittest discover -s tests -v. In this environment, python was the bundled executable under ~/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3. evidence/run_tests.py records the actual executable, revision, working changes, output, and exit code. Starter results are in evidence/01-starter-tests.txt.
+Command at every stage: python -m unittest discover -s tests -v. The exact Python executable is recorded in each captured test log. evidence/run_tests.py records the actual executable, revision, working changes, output, and exit code. Starter results are in evidence/01-starter-tests.txt.
 
 ## Four required categories
 Normal: test_normal_placement_and_history places two notebooks with regular/pickup. Expected and actual: ORD-0001, status placed, total 1000 cents, stock 18, and the same order after reopening. This protects inventory and durable order creation.
 
-Boundary: test_standard_delivery_boundary checks subtotals 9500 and 10000 cents. Expected and actual standard fees are 600 and 0, with totals 10100 and 10000. A student subtotal of 10000 receives a 1000-cent discount and still incurs 600 delivery, confirming that the free threshold is applied after discount. Other tests cover last stock, quantity 99/100, exact student eligibility, and half-cent rounding.
+Boundary: test_standard_delivery_boundary checks subtotals 9500 and 10000 cents. Expected and actual standard fees are 600 and 0, with totals 10100 and 10000. A student subtotal of 10000 receives a 1000-cent discount and still incurs 600 delivery, confirming that the free threshold is applied after discount. These checks matter because using the wrong comparison or applying the threshold before discount can charge or waive delivery incorrectly. Other tests cover last stock, quantity 99/100, student eligibility, and rounding.
 
-Invalid: test_invalid_first_order_does_not_consume_id rejects zero quantity with ValueError. Expected and actual: no save file, stock 20, empty history, and the next valid order is ORD-0001 with 19 notebooks. test_invalid_requests_preserve_existing_state also checks malformed requests, unsupported options, and invalid quantity types against an existing save file, asserting its bytes remain unchanged.
+Invalid: test_invalid_first_order_does_not_consume_id rejects zero quantity with ValueError. Expected and actual: no save file, stock 20, empty history, and the next valid order is ORD-0001 with 19 notebooks. test_invalid_requests_preserve_existing_state also checks malformed requests, unsupported options, and invalid quantity types against an existing save file, asserting its bytes remain unchanged. Rejected input must not lose inventory, add an order, or consume an order ID.
 
-Behavior to preserve: test_quote_and_order_agree compares every quote field with the subsequent student delivery order. Independent expected and actual amounts are subtotal 8000, discount 800, delivery 600, total 7800. Menu confirmation/error tests and CLI default/error tests protect the interfaces affected by refactoring.
+Behavior to preserve: test_quote_and_order_agree compares every quote field with the subsequent student delivery order. Independent expected and actual amounts are subtotal 8000, discount 800, delivery 600, total 7800. This matters because extracting shared pricing must not change a quoted amount when the order is placed. Independent amounts detect matching but incorrect calculations. Menu and CLI tests also protect confirmation, errors, and defaults.
 
 ## Recorded results
 Starter: 4 tests, all pass, exit 0 (01-starter-tests.txt).
@@ -85,7 +85,7 @@ The original checkpoint examples are now supported by reproducible automated tes
 
 Two additional specification defects emerged: student eligibility used subtotal > 5000 instead of >= 5000, and stock checks ignored combined quantities on duplicate product lines. They are recorded in docs/DEFECTS.md as testing discoveries. Neither changes the count of five Task 3 diagnoses. Together with repeated cancellation, they were corrected only after the refactoring checkpoint.
 
-The student's prior Checkpoint A submission is not retroactively replaced by this final report. Subsequent corrections, implementation, and test evidence are documented in this report.
+My original Checkpoint A remains the initial analysis. This report records the corrections and verification that followed it.
 ---PAGE---
 # 4. Three refactorings and verification
 Refactoring commit: 54648e5. Baseline tests commit: 8c763c8. The selected smells are Diagnoses 1-3. The refactoring stage deliberately preserves known incorrect behavior so its effect can be assessed separately from defect repair.
@@ -128,26 +128,26 @@ Commit 70aadbe adds EXPRESS_DELIVERY_FEE_CENTS = 1200 and an express branch in _
 ## Review against prediction
 All predicted application files changed; storage and cancellation needed no express-specific edits. Shared pricing reduced the change to one calculation path for both quotes and orders. Named constants made units explicit. Menu extraction improved readability but had little direct effect on this change: only read_request() needed editing. Full acceptance mapping is in docs/CR01-REVIEW.md. All 32 tests pass; no addresses, timing guarantees, external services, or payments were added.
 ---PAGE---
-# 6. AI engineering judgment and handoff
-Three recommendations are evaluated below using code changes and test results. The interaction record and student responses are preserved in docs/AI-REVIEW.md.
+# 6. AI engineering judgment
+I evaluated the following three recommendations using the code and test evidence. My responses and the relevant interactions are preserved in docs/AI-REVIEW.md. The third example was evaluated during final review, after CR-01.
 
 ## Recommendation 1 - ACCEPT
 AI recommendation: share request validation and pricing between quote and placement, using the state loaded for each operation.
-Student reasoning: "I accepted a shared implementation because quotes and placed orders should apply the same rules, and the same five assertions failed before and after refactoring."
+My decision: Accept. Quotes and placed orders should apply the same rules. The same five assertions failed before and after refactoring, while the existing successful checks still passed.
 Evidence/action: _prepare_quote() centralizes the logic; test_quote_and_order_agree also checks independent expected totals, while placement rechecks stock. The baseline and refactored logs show the same five failures. Implemented in 54648e5. Matching failure counts alone are not sufficient evidence, so successful regression assertions and the diff also support the decision.
 
 ## Recommendation 2 - MODIFY
 AI recommendation: extract every menu branch into a separate function. A narrower alternative was explicitly offered.
-Student reasoning: "I chose to extract only the longer quote, placement, and cancellation flows because those branches handle multiple steps, while the simpler menu options are easy to follow in place."
+My decision: Modify. I chose to extract only the longer quote, placement, and cancellation flows because those branches handle multiple steps. The simpler menu options are easy to follow in place.
 Evidence/action: only handle_quote_or_place() and handle_cancellation() were introduced. Quote and placement share one interaction helper. The menu confirmation, default, error, and exit tests preserve their results; short branches remain readable in run_menu(). Implemented in 54648e5.
 
-## Recommendation 3 - ACCEPT
-AI recommendation: correct the demonstrated specification defects in a separate commit after refactoring.
-Student reasoning: separate changes show which step corrects behavior: refactoring left five failed assertions, fixes produced 23 passing tests, and express produced 32. The initial response said "Reject" to combining fixes with refactoring; after clarification the student explicitly confirmed "Yes-Accept keeping fixes separate." The decision applies to the recommendation actually made.
-Evidence/action: 54648e5 is structural; a9ddcaf corrects the threshold, duplicate stock, and repeat cancellation; 70aadbe implements CR-01. Logs 02-06 show the corresponding results. The decisions use two categories, Accept and Modify, as required. No Task 6 decision remains pending.
+## Recommendation 3 - REJECT
+AI candidate: simplify quantity validation from type(quantity) is not int to not isinstance(quantity, int). This candidate was evaluated in a temporary copy during final review, not applied to the application.
+My decision: Reject. In Python, bool is a subclass of int, so isinstance(True, int) is True. The proposed check accepted quantity=True as one notebook, although the specification explicitly forbids boolean quantities. I kept the exact-type check because it enforces that rule.
+Evidence/action: evidence/07-quantity-candidate.txt records the modified-copy run and focused probe: True was accepted and priced at 500 cents. The invalid-request tests failed, including quote and placement checks. The accepted invalid placement saved an additional order; later assertions then detected altered saved bytes and the wrong next ID. These cascading failures are consequences of one validation defect, not separate defects. The temporary copy was discarded and the real application retained its original check. evidence/evaluate_quantity_check.py reproduces the experiment. The final application suite still passes all 32 tests.
 
-## Repository, reproducibility, and review
+## Repository and reproducibility
 Repository: https://github.com/salladaa/COMP3415-A2-Campus-Supply-Desk
-Review link: https://github.com/salladaa/COMP3415-A2-Campus-Supply-Desk/tree/codex/software-rescue . Main remains the starter; review the completed work on this branch. The application/test commit is 70aadbe1b8bf33ee7b6e54fab99e2582f6615a50; report-only commits follow it. Original reference: assignment-starter / 82ed75e. Meaningful stages: tests 8c763c8; refactor 54648e5; defects a9ddcaf; prediction 4b6a209; express 70aadbe.
+The completed work is on main, the default branch, so an ordinary clone contains the final application, tests, and report. Application/test commit: 70aadbe1b8bf33ee7b6e54fab99e2582f6615a50. Later commits add documentation and the isolated review experiment without changing those files. Original: assignment-starter / 82ed75e. Stages: tests 8c763c8; refactor 54648e5; fixes a9ddcaf; prediction 4b6a209; CR-01 70aadbe.
 
-With Python 3.10+, run python -m unittest discover -s tests -v from the repository root. Expected: 32 tests, OK. Final evidence is evidence/06-final-verification.txt. Interactive use: python -m supplydesk. All tests use temporary state. Concurrency, crash-safe saving, arbitrary manual save-file edits, payments, and shipping integrations remain outside the supplied scope.
+With Python 3.10+, run python -m unittest discover -s tests -v from the repository root. Expected: 32 tests, OK. Final revision evidence is evidence/08-submission-verification.txt; earlier verification remains in log 06. Interactive use: python -m supplydesk. All tests use temporary state. Concurrency, crash-safe saving, arbitrary manual save-file edits, payments, and shipping integrations remain outside the supplied scope.

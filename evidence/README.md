@@ -22,3 +22,8 @@ All tests use temporary state paths; ordinary saved user data is untouched.
 
 - 06-final-verification.txt: committed application/test version 70aadbe1b8bf33ee7b6e54fab99e2582f6615a50; 32 tests pass, exit 0. Later changes are reporting/interaction records only.
 - Report QA: output/pdf/COMP3415-A2-Report.pdf renders as seven pages. All pages were visually inspected for clipping, layout, and footer separation. docs/render_report.py rebuilds it using reportlab (authoring-only dependency).
+
+
+- 07-quantity-candidate.txt: rejected technical candidate evaluated in a temporary copy during final review. Replacing the exact int type check with isinstance admits True. The 28 failures include cascading saved-state/ID assertions after the invalid placement; they are not 28 distinct defects. Reproduce with `python evidence/evaluate_quantity_check.py`.
+- 08-submission-verification.txt: real application unchanged, full 32-test suite passes after final report revisions. The rejected candidate was never applied to production source.
+- Final report revision: draft labels removed, Task 2 rationale expanded, Task 6 third example replaced with the actual technical candidate/rejection and complete interaction record. Seven pages rendered and checked. Completed history is merged into default branch main.

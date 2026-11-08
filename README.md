@@ -240,3 +240,16 @@ The four starter tests remain unchanged. All tests use temporary data files.
 See [test evidence](evidence/README.md), [separate defect fixes](docs/DEFECTS.md),
 [CR-01 prediction](docs/CR01-PREDICTION.md), and [AI judgment record](docs/AI-REVIEW.md).
 The original starter is preserved by the `assignment-starter` Git tag.
+
+
+## 8. Final assignment materials
+
+The default branch, `main`, contains the completed assignment. The original starter is available
+at the `assignment-starter` tag. The final report is
+[COMP3415-A2-Report.pdf](output/pdf/COMP3415-A2-Report.pdf), with
+[final verification](evidence/08-submission-verification.txt) and an
+[explanation guide](docs/EXPLANATION-GUIDE.md).
+
+The isolated Task 6 quantity-check experiment is recorded separately in
+[evidence/07-quantity-candidate.txt](evidence/07-quantity-candidate.txt). Its failures describe
+a rejected temporary-copy change, not the final application. The production suite passes 32 tests.

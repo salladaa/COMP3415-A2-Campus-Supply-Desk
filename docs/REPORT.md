@@ -133,28 +133,26 @@ Commit 70aadbe adds EXPRESS_DELIVERY_FEE_CENTS = 1200 and an express branch in _
 All predicted application files changed; storage and cancellation needed no express-specific edits. Shared pricing reduced the change to one calculation path for both quotes and orders. Named constants made units explicit. Menu extraction improved readability but had little direct effect on this change: only read_request() needed editing. Full acceptance mapping is in docs/CR01-REVIEW.md. All 32 tests pass; no addresses, timing guarantees, external services, or payments were added.
 ---PAGE---
 # 6. AI engineering judgment
-I evaluated these recommendations using code and test evidence. The separate AI-use record contains the actual prompts, my responses, and linked logs. The third candidate was evaluated during final review, after CR-01.
+Recommendations 1 and 2 use my later explanations, lightly edited for grammar and precision. Recommendation 3 retains its AI-assisted attribution. The record preserves original replies, drafting history, and test logs. The third candidate was constructed for evaluation during final review.
 
 AI-use record: https://github.com/salladaa/COMP3415-A2-Campus-Supply-Desk/blob/main/docs/AI-REVIEW.md
 Separate upload: COMP3415-A2-AI-Use-Record.zip (record, historical context, and complete supporting test logs).
 
 ## Recommendation 1 - ACCEPT
 AI recommendation: share request validation and pricing between quote and placement, using the state loaded for each operation.
-My decision: Accept. Quotes and placed orders should apply the same rules. The same five assertions failed before and after refactoring, while the existing successful checks still passed.
-Evidence/action: _prepare_quote() centralizes the logic; test_quote_and_order_agree also checks independent expected totals, while placement rechecks stock. Implemented in 54648e5. The baseline/refactored logs, passing regression assertions, and diff support the decision; failure counts alone are not sufficient.
+My decision: Accept. _prepare_quote() checks that the request is valid and calculates the price without saving anything or changing stock. Sharing it keeps quotes and orders on the same rules instead of two copies that could get out of sync. Placement must check current stock again because a quote does not reserve items, so stock may have changed.
+Evidence/action: implemented in 54648e5. test_quote_and_order_agree checks agreement and independent expected totals; test_placement_rechecks_stock_after_quote checks fresh stock validation. Baseline/refactored logs and the diff support preservation.
 
 ## Recommendation 2 - MODIFY
 AI recommendation: extract every menu branch into a separate function. A narrower alternative was explicitly offered.
-My decision: Modify. I chose to extract only the longer quote, placement, and cancellation flows because those branches handle multiple steps. The simpler menu options are easy to follow in place.
-Evidence/action: only handle_quote_or_place() and handle_cancellation() were introduced. Quote and placement share one interaction helper. The menu confirmation, default, error, and exit tests preserve their results; short branches remain readable in run_menu(). Implemented in 54648e5.
+My decision: Modify. The quote/place and cancellation flows have several steps: ask for input, request confirmation when needed, act, and print the result. Extracting them into handle_quote_or_place() and handle_cancellation() makes run_menu() shorter and each flow easier to read. The catalog, lookup, and history branches are shorter, so they can stay inline. Quotes alone need no confirmation.
+Evidence/action: 54648e5 adds handle_quote_or_place() and handle_cancellation(). Menu confirmation, default, error, and exit tests preserve their results; shorter branches remain in run_menu().
 
 ## Recommendation 3 - REJECT
-AI candidate: simplify quantity validation from type(quantity) is not int to not isinstance(quantity, int). This candidate was evaluated in a temporary copy during final review, not applied to the application.
-Recorded decision: Reject, using an explanation drafted with Claude and pasted into the interaction record. Python treats bool as a subclass of int, so isinstance(True, int) is True. The candidate accepted True as one notebook, violating the specification. The exact-type check was retained. The experiment was run by Codex; no independent personal test run is claimed.
-Evidence/action: evidence/07-quantity-candidate.txt records the modified-copy run and focused probe: True was accepted and priced at 500 cents. The invalid-request tests failed, including quote and placement checks. The accepted invalid placement saved an additional order; later assertions then detected altered saved bytes and the wrong next ID. These are cascading effects of one defect. The temporary copy was discarded; the application retained its original check and passes 32 tests. evidence/evaluate_quantity_check.py reproduces the experiment.
+AI candidate: replace type(quantity) is not int with not isinstance(quantity, int). This candidate was constructed during final review specifically for evaluation, with the boolean caveat disclosed when proposed. It was tested only in a temporary copy, not applied to the application.
+Recorded decision: Reject (Claude-assisted wording). bool is a subclass of int, so isinstance(True, int) accepts True as one item, contrary to the specification. The exact-type check was retained. The final reply explicitly said no code had been run personally; the 500-cent result and failures came from Codex’s temporary-copy experiment.
+Evidence/action: log 07 records True being accepted at 500 cents and failures in quote/placement validation. The invalid placement saved an extra order, causing later saved-state and ID assertions to fail. These are cascading effects of one defect. The temporary copy was discarded; production retains the exact-type check and passes 32 tests. Reproduce with evidence/evaluate_quantity_check.py.
 
 ## Repository and reproducibility
 Repository: https://github.com/salladaa/COMP3415-A2-Campus-Supply-Desk
-The completed work is on main, the default branch, so an ordinary clone contains the final application, tests, and report. Application/test commit: 70aadbe1b8bf33ee7b6e54fab99e2582f6615a50. Later commits add documentation and the isolated review experiment without changing those files. Original: assignment-starter / 82ed75e. Stages: tests 8c763c8; refactor 54648e5; fixes a9ddcaf; prediction 4b6a209; CR-01 70aadbe.
-
-Run python -m unittest discover -s tests -v with Python 3.10+. Expected: 32 tests, OK. Logs 08 and 09 record final verification and a credential-free fresh clone check.
+The default branch main contains the completed assignment. Application/test version: 70aadbe1b8bf33ee7b6e54fab99e2582f6615a50; subsequent changes are documentation and isolated experiments. The original remains tagged assignment-starter (82ed75e). The implementation commits are cited in Tasks 4-5.

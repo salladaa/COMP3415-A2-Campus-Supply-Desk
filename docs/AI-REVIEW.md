@@ -1,0 +1,27 @@
+# AI interaction and student judgment record
+
+This file preserves the three recommendations actually presented in the Codex chat on 2026-11-08. It is an AI-use record, not a claim of independent student authorship. The student reported that Checkpoint A had been submitted and that the instructor requested AI disclosure in comments. The final submission must retain the Task 6 record required by the handout.
+
+## 1. Shared validation/pricing
+Recommendation: Extract one shared request-validation/pricing helper used by quote() and place_order(), passing in the state already loaded for that operation.
+Evidence: starter service.py repeats validation and pricing in both methods. test_quote_and_order_agree checks items and totals; test_placement_rechecks_stock_after_quote checks fresh validation.
+Proposed action: implement the helper while preserving validation order and calculations during refactoring.
+Student decision (Accept / Modify / Reject): PENDING.
+Student technical reasoning: PENDING.
+
+## 2. Menu extraction scope
+Recommendation: Extract every interactive menu branch into its own function to shorten run_menu().
+Evidence: original run_menu combines dispatch, prompts, confirmation, and error handling. test_menu_defaults_decline_and_confirmation and test_menu_errors_and_exit protect these interactions.
+Alternative explicitly offered: extract only quote/place and cancellation flows, leaving short branches inline.
+Proposed draft action: narrower extraction; no student decision has been assumed.
+Student decision (Accept / Modify / Reject): PENDING.
+Student technical reasoning: PENDING.
+
+## 3. Separate defect corrections
+Recommendation: Fix the $50 student threshold, combined duplicate-line stock validation, and repeated cancellation in a separate commit after behavior-preserving refactoring.
+Evidence: evidence/02-before-refactoring.txt reports 5 failed assertions in these 3 methods against FUNCTIONAL_SPEC.md.
+Proposed action: keep failures visible through refactoring, then correct all three separately before CR-01.
+Student decision (Accept / Modify / Reject): PENDING.
+Student technical reasoning: PENDING.
+
+The actual request to the student was: “Do you Accept, Modify, or Reject this recommendation, and why?” for each recommendation. For #2 the question referred to the broad recommendation and stated the narrower extraction would be used for the draft. The student was reminded that the three decisions must span at least two categories and must be based on their own reasoning. Answers remain pending; these placeholders are not fabricated student judgments. Preserve/export this chat with submission comments as additional interaction evidence.

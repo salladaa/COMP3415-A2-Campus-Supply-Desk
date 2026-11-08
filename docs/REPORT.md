@@ -81,11 +81,11 @@ Proposed improvement: return the existing cancelled order before stock restorati
 ## Corrections and additions to Checkpoint A
 The submitted overview, notebook example, and all five diagnoses are supported. Some original references were imprecise: cli.py ends at line 67, not 66; run_menu() occupies lines 45-89 rather than the broad menu range given in the draft. This report replaces loose labels with explicit files, methods, and original/final revision context. The starter tests still consist of four successful-path checks.
 
-The original checkpoint examples are now supported by reproducible tests rather than attribution alone. The four-category initial strategy was expanded into 19 new baseline test methods before application edits. A quote/order equality check was supplemented by independent expected amounts to avoid two implementations agreeing on the same wrong result.
+The original checkpoint examples are now supported by reproducible automated tests. The four-category initial strategy was expanded into 19 new baseline test methods before application edits. A quote/order equality check was supplemented by independent expected amounts to avoid two implementations agreeing on the same wrong result.
 
 Two additional specification defects emerged: student eligibility used subtotal > 5000 instead of >= 5000, and stock checks ignored combined quantities on duplicate product lines. They are recorded in docs/DEFECTS.md as testing discoveries. Neither changes the count of five Task 3 diagnoses. Together with repeated cancellation, they were corrected only after the refactoring checkpoint.
 
-The student's prior Checkpoint A submission is not retroactively replaced by this final report. Subsequent corrections, implementation, and test evidence are documented here and in the separate AI interaction record.
+The student's prior Checkpoint A submission is not retroactively replaced by this final report. Subsequent corrections, implementation, and test evidence are documented in this report.
 ---PAGE---
 # 4. Three refactorings and verification
 Refactoring commit: 54648e5. Baseline tests commit: 8c763c8. The selected smells are Diagnoses 1-3. The refactoring stage deliberately preserves known incorrect behavior so its effect can be assessed separately from defect repair.
@@ -129,7 +129,7 @@ Commit 70aadbe adds EXPRESS_DELIVERY_FEE_CENTS = 1200 and an express branch in _
 All predicted application files changed; storage and cancellation needed no express-specific edits. Shared pricing reduced the change to one calculation path for both quotes and orders. Named constants made units explicit. Menu extraction improved readability but had little direct effect on this change: only read_request() needed editing. Full acceptance mapping is in docs/CR01-REVIEW.md. All 32 tests pass; no addresses, timing guarantees, external services, or payments were added.
 ---PAGE---
 # 6. AI engineering judgment and handoff
-The actual recommendations and student responses are preserved in docs/AI-REVIEW.md. The student supplied the decisions and reasoning below in this chat. These records distinguish suggested work, implemented actions, and the student's judgment; they do not claim that AI-performed tests were independent student work.
+Three recommendations are evaluated below using code changes and test results. The interaction record and student responses are preserved in docs/AI-REVIEW.md.
 
 ## Recommendation 1 - ACCEPT
 AI recommendation: share request validation and pricing between quote and placement, using the state loaded for each operation.

@@ -1,0 +1,36 @@
+Command: ['/Users/santhoshallada/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3', '-m', 'unittest', 'discover', '-s', 'tests', '-v']
+Python: 3.12.14
+HEAD before run: 54648e5177b2663465b593445c7db87380b1f21d
+Working changes at run:
+ M supplydesk/service.py
+
+test_cli_defaults_and_invalid_exit (test_regression.RegressionTests.test_cli_defaults_and_invalid_exit) ... ok
+test_duplicate_lines_cannot_exceed_combined_stock (test_regression.RegressionTests.test_duplicate_lines_cannot_exceed_combined_stock) ... ok
+test_half_cent_rounding (test_regression.RegressionTests.test_half_cent_rounding) ... ok
+test_history_and_prices_survive_catalog_changes_and_cancel (test_regression.RegressionTests.test_history_and_prices_survive_catalog_changes_and_cancel) ... ok
+test_invalid_first_order_does_not_consume_id (test_regression.RegressionTests.test_invalid_first_order_does_not_consume_id) ... ok
+test_invalid_requests_preserve_existing_state (test_regression.RegressionTests.test_invalid_requests_preserve_existing_state) ... ok
+test_last_stock_and_quantity_limits (test_regression.RegressionTests.test_last_stock_and_quantity_limits) ... ok
+test_menu_defaults_decline_and_confirmation (test_regression.RegressionTests.test_menu_defaults_decline_and_confirmation) ... ok
+test_menu_errors_and_exit (test_regression.RegressionTests.test_menu_errors_and_exit) ... ok
+test_normal_placement_and_history (test_regression.RegressionTests.test_normal_placement_and_history) ... ok
+test_placement_rechecks_stock_after_quote (test_regression.RegressionTests.test_placement_rechecks_stock_after_quote) ... ok
+test_quote_and_order_agree (test_regression.RegressionTests.test_quote_and_order_agree) ... ok
+test_quote_has_no_side_effects (test_regression.RegressionTests.test_quote_has_no_side_effects) ... ok
+test_repeated_cancellation_is_idempotent (test_regression.RegressionTests.test_repeated_cancellation_is_idempotent) ... ok
+test_standard_delivery_boundary (test_regression.RegressionTests.test_standard_delivery_boundary) ... ok
+test_student_discount_at_threshold (test_regression.RegressionTests.test_student_discount_at_threshold) ... ok
+test_student_discount_below_and_above_threshold (test_regression.RegressionTests.test_student_discount_below_and_above_threshold) ... ok
+test_unknown_order_and_malformed_save (test_regression.RegressionTests.test_unknown_order_and_malformed_save) ... ok
+test_valid_duplicate_lines (test_regression.RegressionTests.test_valid_duplicate_lines) ... ok
+test_cancel_order_restores_stock (test_smoke.OrderSmokeTests.test_cancel_order_restores_stock) ... ok
+test_order_can_be_reopened (test_smoke.OrderSmokeTests.test_order_can_be_reopened) ... ok
+test_regular_pickup_quote (test_smoke.OrderSmokeTests.test_regular_pickup_quote) ... ok
+test_student_delivery_quote (test_smoke.OrderSmokeTests.test_student_delivery_quote) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 0.116s
+
+OK
+
+Exit code: 0

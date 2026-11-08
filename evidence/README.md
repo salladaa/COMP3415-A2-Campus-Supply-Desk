@@ -19,3 +19,6 @@ Baseline failures are deliberately real failures, not skipped tests or adjusted 
 No application code was edited before capturing the baseline. Original starter commit:
 82ed75e0714e50c086a13ee491f51b349814d8a4 (tag assignment-starter).
 All tests use temporary state paths; ordinary saved user data is untouched.
+
+- 06-final-verification.txt: committed application/test version 70aadbe1b8bf33ee7b6e54fab99e2582f6615a50; 32 tests pass, exit 0. Later changes are reporting/interaction records only.
+- Report QA: output/pdf/COMP3415-A2-Report.pdf renders as seven pages. All pages were visually inspected for clipping, layout, and footer separation. docs/render_report.py rebuilds it using reportlab (authoring-only dependency).

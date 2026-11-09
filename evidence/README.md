@@ -1,6 +1,6 @@
 # Test evidence
 
-Runtime: bundled CPython 3.12.14 (system python3 is 3.9.6 and below the README requirement).
+Staged test runtime: bundled CPython 3.12.14 (system python3 is 3.9.6 and below the README requirement).
 Executable: `/Users/santhoshallada/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3`
 Portable command, with Python 3.10+: `python -m unittest discover -s tests -v`.
 Capture command: `python evidence/run_tests.py LOG_NAME.txt`. It records exit code and worktree status.
@@ -27,3 +27,11 @@ All tests use temporary state paths; ordinary saved user data is untouched.
 - 07-quantity-candidate.txt: rejected technical candidate evaluated in a temporary copy during final review. Replacing the exact int type check with isinstance admits True. The 28 failures include cascading saved-state/ID assertions after the invalid placement; they are not 28 distinct defects. Reproduce with `python evidence/evaluate_quantity_check.py`.
 - 08-submission-verification.txt: real application unchanged, full 32-test suite passes after final report revisions. The rejected candidate was never applied to production source.
 - Final report revision: draft labels removed, Task 2 rationale expanded, Task 6 third example replaced with the actual technical candidate/rejection and complete interaction record. Seven pages rendered and checked. Completed history is merged into default branch main.
+
+Additional evidence:
+- 07-original-codex-run.txt: original Codex candidate experiment.
+- 07-quantity-candidate.txt: student rerun using Xcode Python; version was not captured.
+- 10-code-version-check.txt: empty application/test diff against 70aadbe at the recorded revision.
+- 11-student-experiment.png: student candidate experiment screenshot.
+- 12-student-suite.png: student production suite screenshot, 32 tests OK in 0.345s.
+- 13-versioned-candidate.txt: subsequent Codex rerun with explicit Python version.

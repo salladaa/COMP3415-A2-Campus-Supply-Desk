@@ -22,7 +22,7 @@ The hardest original method is place_order() (lines 63-121): validation, pricing
 Source references throughout distinguish the original tag from the final application commit. Requirements are the assignment handout, FUNCTIONAL_SPEC.md, and the official CR-01 copied unchanged into docs/CR-01.md.
 ---PAGE---
 # 2. Testing strategy and baseline
-All tests run in isolated temporary directories. No ordinary saved orders are modified. The runtime was CPython 3.12.14; the host's default Python 3.9.6 was not used because the README requires 3.10+. The application needs no third-party runtime packages.
+All tests run in isolated temporary directories. No ordinary saved orders are modified. The staged test runs used CPython 3.12.14 (README requires 3.10+). The later student candidate experiment used Xcode Python without recording its version; a separate versioned 3.12 rerun confirms its findings. The application needs no third-party runtime packages.
 
 Command at every stage: python -m unittest discover -s tests -v. The exact Python executable is recorded in each captured test log. evidence/run_tests.py records the actual executable, revision, working changes, output, and exit code. Starter results are in evidence/01-starter-tests.txt.
 
@@ -154,7 +154,7 @@ Evidence/action: 54648e5 adds handle_quote_or_place() and handle_cancellation().
 
 ## Recommendation 3 - REJECT
 AI candidate: replace type(quantity) is not int with not isinstance(quantity, int). This candidate was constructed during final review specifically for evaluation, with the boolean caveat disclosed when proposed. It was tested only in a temporary copy, not applied to the application.
-Recorded decision: Reject. bool is a subclass of int, so isinstance(True, int) accepts True as one item, contrary to the specification. The exact-type check was retained. I subsequently ran the experiment myself: True was accepted at 500 cents, with 28 failure reports. I then ran the unchanged application suite: 32 tests passed in 0.345 seconds. Screenshots 11-12 preserve these runs; the earlier Codex run remains separately recorded.
+Recorded decision: Reject. The probe printed True for isinstance(True, int), accepted a boolean quantity, and priced it at 500 cents, contrary to the specification. The exact-type check was retained. I subsequently ran the experiment myself: True was accepted at 500 cents, with 28 failure reports. I then ran the unchanged application suite: 32 tests passed in 0.345 seconds. evidence/11-student-experiment.png and evidence/12-student-suite.png preserve these runs; the earlier Codex run remains separately recorded.
 Evidence/action: log 07 records True being accepted at 500 cents and failures in quote/placement validation. The invalid placement saved an extra order, causing later saved-state and ID assertions to fail. These are cascading effects of one defect. The temporary copy was discarded; production retains the exact-type check and passes 32 tests. Reproduce with evidence/evaluate_quantity_check.py.
 
 ## Repository and reproducibility

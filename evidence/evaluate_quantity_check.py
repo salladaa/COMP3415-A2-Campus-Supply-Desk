@@ -1,5 +1,6 @@
 """Evaluate a Task 6 candidate in a temporary copy; never edit production code."""
 from pathlib import Path
+import platform
 import shutil
 import subprocess
 import sys
@@ -26,7 +27,7 @@ with tempfile.TemporaryDirectory() as directory:
         'Candidate: replace type(quantity) is not int with not isinstance(quantity, int).\n'
         'Change applied only to a temporary copy, then discarded.\n'
         'Specification: Requests and validation forbids boolean quantities.\n'
-        f'Command: {command!r}\n{result.stdout}{result.stderr}\nExit code: {result.returncode}\n'
+        f'Python version: {platform.python_version()}\nCommand: {command!r}\n{result.stdout}{result.stderr}\nExit code: {result.returncode}\n'
         f'Focused probe:\n{probe.stdout}{probe.stderr}\nProbe exit code: {probe.returncode}\n')
     (root / 'evidence/07-quantity-candidate.txt').write_text(output)
     print(output)

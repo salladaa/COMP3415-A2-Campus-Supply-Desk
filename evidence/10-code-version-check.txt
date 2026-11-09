@@ -1,0 +1,3 @@
+Reviewed revision: 18c2d9b0972f5b1c3d07c279aa8383d77debc50e
+Command: git diff 70aadbe HEAD -- supplydesk tests
+Result: empty; exit 0. Application and tests unchanged.

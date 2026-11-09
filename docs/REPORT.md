@@ -5,7 +5,7 @@ Student ID: 1279244
 8 November 2026. This report explains the original system, testing strategy, five diagnoses, three refactorings, express delivery change, and engineering judgments in Tasks 1-6.
 
 Repository: https://github.com/salladaa/COMP3415-A2-Campus-Supply-Desk
-Submission branch: main (the repository default). Application and test version described: 70aadbe1b8bf33ee7b6e54fab99e2582f6615a50. Later documentation and experiment commits do not change that application or its test suite.
+Submission branch: main (the repository default). Application and test version described: 70aadbe1b8bf33ee7b6e54fab99e2582f6615a50. Verified with git diff 70aadbe HEAD -- supplydesk tests: empty. Documentation and experiment changes leave that application and test suite unchanged.
 Original starter: 82ed75e0714e50c086a13ee491f51b349814d8a4, preserved as assignment-starter. The checkout was clean, with one starter commit and no pre-existing local edits.
 
 ## 1. System understanding
@@ -36,11 +36,15 @@ Invalid: test_invalid_first_order_does_not_consume_id rejects zero quantity with
 Behavior to preserve: test_quote_and_order_agree compares every quote field with the subsequent student delivery order. Independent expected and actual amounts are subtotal 8000, discount 800, delivery 600, total 7800. This matters because extracting shared pricing must not change a quoted amount when the order is placed. Independent amounts detect matching but incorrect calculations. Menu and CLI tests also protect confirmation, errors, and defaults.
 
 ## Recorded results
-Starter: 4 tests, all pass, exit 0 (01-starter-tests.txt).
-Before refactoring: 23 tests, 5 failed assertions across 3 test methods, exit 1 (02-before-refactoring.txt).
-After refactoring: the same 23 tests and the same 5 failures, exit 1 (03-after-refactoring.txt).
-After separate defect fixes: 23 tests, all pass, exit 0 (04-after-defect-fixes.txt).
-After CR-01 and at final verification: 32 tests, all pass, exit 0 (05-after-cr01.txt and 06-final-verification.txt).
+
+| Stage | Tests | Failures | Exit | Evidence log |
+| --- | --- | --- | --- | --- |
+| Starter | 4 | 0 | 0 | 01-starter-tests.txt |
+| Baseline | 23 | 5 | 1 | 02-before-refactoring.txt |
+| Refactored | 23 | 5 | 1 | 03-after-refactoring.txt |
+| Defects fixed | 23 | 0 | 0 | 04-after-defect-fixes.txt |
+| CR-01 | 32 | 0 | 0 | 05-after-cr01.txt |
+| Final check | 32 | 0 | 0 | 06-final-verification.txt |
 
 The five baseline failures are two quote/placement failures for the exact student threshold, two for combined duplicate-line stock, and one for repeated cancellation. They are real failures, not skips or expected-failure annotations. Assertions were not weakened to hide them. Test counts refer to methods; several methods execute additional parameterized subcases.
 ---PAGE---
@@ -48,7 +52,7 @@ The five baseline failures are two quote/placement failures for the exact studen
 These are exactly the five diagnoses selected from Checkpoint A: three code smells, one testing issue, and one behavioral defect. Locations on this page and the next refer to assignment-starter (82ed75e). The two additional defects discovered by testing are discussed separately, not counted as extra Task 3 diagnoses.
 
 ## Diagnosis 1 - Duplicated validation and pricing
-Location: supplydesk/service.py, OrderService.quote(), lines 15-60, and place_order(), lines 65-112.
+Location: supplydesk/service.py, OrderService.quote(), lines 13-61, and place_order(), lines 63-121 (whole methods; duplicated validation/pricing is within lines 15-60 and 65-112).
 Problem and evidence: both methods repeat customer/fulfillment checks, item validation, catalog lookup, quantity and stock checks, line construction, the student discount, and the delivery calculation.
 Consequence: changing a rule in only one copy can make the quoted amount disagree with the placed order. A maintainer must compare both blocks, increasing the review burden and the chance of divergent fixes.
 Proposed improvement: extract a shared request-validation/pricing helper that receives the current state. Retain inventory changes, ID allocation, and saving in place_order(). Both public operations should load current state independently so an earlier quote cannot bypass stock revalidation.
@@ -81,7 +85,7 @@ Consequence: repeated cancellation creates inventory that does not exist, violat
 Proposed improvement: return the existing cancelled order before stock restoration or saving. Verify that repeat cancellation leaves saved bytes unchanged and retains the original items and totals. This is a behavioral defect fix, not a refactoring.
 
 ## Corrections and additions to Checkpoint A
-The Checkpoint A overview, notebook example, and all five diagnoses are supported. Checkpoint A correctly gives cli.py as lines 11-67. It gives menu.py as lines 25-89 for read_request() and run_menu(); this report uses lines 15-89 when also discussing show_order(), and lines 45-89 for run_menu() alone. These ranges describe different scopes, not errors in Checkpoint A. All line references here identify the original starter version. The starter tests consist of four successful-path checks.
+The Checkpoint A overview and five diagnoses are supported. In the original source, cli.py spans lines 11-67, read_request() starts at menu.py line 25, show_order() at line 15, and run_menu() at line 45. Checkpoint A’s menu range 25-89 covers read_request() and run_menu(); the overview here includes show_order() and therefore uses 15-89.
 
 The original checkpoint examples are now supported by reproducible automated tests. The four-category initial strategy was expanded into 19 new baseline test methods before application edits. A quote/order equality check was supplemented by independent expected amounts to avoid two implementations agreeing on the same wrong result.
 
@@ -133,7 +137,7 @@ Commit 70aadbe adds EXPRESS_DELIVERY_FEE_CENTS = 1200 and an express branch in _
 All predicted application files changed; storage and cancellation needed no express-specific edits. Shared pricing reduced the change to one calculation path for both quotes and orders. Named constants made units explicit. Menu extraction improved readability but had little direct effect on this change: only read_request() needed editing. Full acceptance mapping is in docs/CR01-REVIEW.md. All 32 tests pass; no addresses, timing guarantees, external services, or payments were added.
 ---PAGE---
 # 6. AI engineering judgment
-Recommendations 1 and 2 use my later explanations, lightly edited for grammar and precision. The record preserves original replies, drafting history, and test logs. The third candidate was constructed for evaluation during final review.
+Codex proposed Recommendations 1 and 2 during implementation after Checkpoint A was submitted. Their justifications below are my later explanations, edited by Codex for grammar and technical precision; my original wording is preserved in the record. Recommendation 3 was constructed for evaluation during final review.
 
 AI-use record: https://github.com/salladaa/COMP3415-A2-Campus-Supply-Desk/blob/main/docs/AI-REVIEW.md
 Separate upload: COMP3415-A2-AI-Use-Record.zip (record, historical context, and complete supporting test logs).
@@ -150,7 +154,7 @@ Evidence/action: 54648e5 adds handle_quote_or_place() and handle_cancellation().
 
 ## Recommendation 3 - REJECT
 AI candidate: replace type(quantity) is not int with not isinstance(quantity, int). This candidate was constructed during final review specifically for evaluation, with the boolean caveat disclosed when proposed. It was tested only in a temporary copy, not applied to the application.
-Recorded decision: Reject. bool is a subclass of int, so isinstance(True, int) accepts True as one item, contrary to the specification. The exact-type check was retained. The final reply explicitly said no code had been run personally; the 500-cent result and failures came from Codex’s temporary-copy experiment.
+Recorded decision: Reject. bool is a subclass of int, so isinstance(True, int) accepts True as one item, contrary to the specification. The exact-type check was retained. Execution evidence: Codex ran the temporary-copy experiment producing the 500-cent result and failures; I do not claim a personal test run.
 Evidence/action: log 07 records True being accepted at 500 cents and failures in quote/placement validation. The invalid placement saved an extra order, causing later saved-state and ID assertions to fail. These are cascading effects of one defect. The temporary copy was discarded; production retains the exact-type check and passes 32 tests. Reproduce with evidence/evaluate_quantity_check.py.
 
 ## Repository and reproducibility

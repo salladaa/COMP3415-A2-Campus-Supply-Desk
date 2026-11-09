@@ -5,7 +5,7 @@ import re
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_LEFT
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak, Table, TableStyle
 
 root = Path(__file__).resolve().parents[1]
 source = root / 'docs/REPORT.md'
@@ -22,6 +22,13 @@ for page_index, page in enumerate(source.read_text().split('---PAGE---')):
     if page_index:
         story.append(PageBreak())
     for block in page.strip().split('\n\n'):
+        if block.startswith('| '):
+            rows = [[Paragraph(escape(c.strip()), styles['BodyReport']) for c in line.strip('|').split('|')] for line in block.splitlines() if not line.startswith('| ---')]
+            table = Table(rows, colWidths=[85, 35, 45, 30, 329])
+            table.setStyle(TableStyle([('BACKGROUND',(0,0),(-1,0),colors.HexColor('#e4eef4')),('VALIGN',(0,0),(-1,-1),'TOP'),('LINEBELOW',(0,0),(-1,-1),0.3,colors.HexColor('#c9d8e4'))]))
+            story.append(table)
+            story.append(Spacer(1,7))
+            continue
         # Adjacent headings are separate paragraphs, as are list-like evidence lines.
         blocks=block.splitlines() if block.startswith('#') else [block]
         for text in blocks:

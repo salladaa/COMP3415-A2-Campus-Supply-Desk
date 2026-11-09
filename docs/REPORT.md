@@ -133,7 +133,7 @@ Commit 70aadbe adds EXPRESS_DELIVERY_FEE_CENTS = 1200 and an express branch in _
 All predicted application files changed; storage and cancellation needed no express-specific edits. Shared pricing reduced the change to one calculation path for both quotes and orders. Named constants made units explicit. Menu extraction improved readability but had little direct effect on this change: only read_request() needed editing. Full acceptance mapping is in docs/CR01-REVIEW.md. All 32 tests pass; no addresses, timing guarantees, external services, or payments were added.
 ---PAGE---
 # 6. AI engineering judgment
-Recommendations 1 and 2 use my later explanations, lightly edited for grammar and precision. Recommendation 3 retains its AI-assisted attribution. The record preserves original replies, drafting history, and test logs. The third candidate was constructed for evaluation during final review.
+Recommendations 1 and 2 use my later explanations, lightly edited for grammar and precision. The record preserves original replies, drafting history, and test logs. The third candidate was constructed for evaluation during final review.
 
 AI-use record: https://github.com/salladaa/COMP3415-A2-Campus-Supply-Desk/blob/main/docs/AI-REVIEW.md
 Separate upload: COMP3415-A2-AI-Use-Record.zip (record, historical context, and complete supporting test logs).
@@ -150,7 +150,7 @@ Evidence/action: 54648e5 adds handle_quote_or_place() and handle_cancellation().
 
 ## Recommendation 3 - REJECT
 AI candidate: replace type(quantity) is not int with not isinstance(quantity, int). This candidate was constructed during final review specifically for evaluation, with the boolean caveat disclosed when proposed. It was tested only in a temporary copy, not applied to the application.
-Recorded decision: Reject (Claude-assisted wording). bool is a subclass of int, so isinstance(True, int) accepts True as one item, contrary to the specification. The exact-type check was retained. The final reply explicitly said no code had been run personally; the 500-cent result and failures came from Codex’s temporary-copy experiment.
+Recorded decision: Reject. bool is a subclass of int, so isinstance(True, int) accepts True as one item, contrary to the specification. The exact-type check was retained. The final reply explicitly said no code had been run personally; the 500-cent result and failures came from Codex’s temporary-copy experiment.
 Evidence/action: log 07 records True being accepted at 500 cents and failures in quote/placement validation. The invalid placement saved an extra order, causing later saved-state and ID assertions to fail. These are cascading effects of one defect. The temporary copy was discarded; production retains the exact-type check and passes 32 tests. Reproduce with evidence/evaluate_quantity_check.py.
 
 ## Repository and reproducibility

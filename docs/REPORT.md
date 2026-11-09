@@ -154,7 +154,7 @@ Evidence/action: 54648e5 adds handle_quote_or_place() and handle_cancellation().
 
 ## Recommendation 3 - REJECT
 AI candidate: replace type(quantity) is not int with not isinstance(quantity, int). This candidate was constructed during final review specifically for evaluation, with the boolean caveat disclosed when proposed. It was tested only in a temporary copy, not applied to the application.
-Recorded decision: Reject. bool is a subclass of int, so isinstance(True, int) accepts True as one item, contrary to the specification. The exact-type check was retained. Execution evidence: Codex ran the temporary-copy experiment producing the 500-cent result and failures; I do not claim a personal test run.
+Recorded decision: Reject. bool is a subclass of int, so isinstance(True, int) accepts True as one item, contrary to the specification. The exact-type check was retained. I subsequently ran the experiment myself: True was accepted at 500 cents, with 28 failure reports. I then ran the unchanged application suite: 32 tests passed in 0.345 seconds. Screenshots 11-12 preserve these runs; the earlier Codex run remains separately recorded.
 Evidence/action: log 07 records True being accepted at 500 cents and failures in quote/placement validation. The invalid placement saved an extra order, causing later saved-state and ID assertions to fail. These are cascading effects of one defect. The temporary copy was discarded; production retains the exact-type check and passes 32 tests. Reproduce with evidence/evaluate_quantity_check.py.
 
 ## Repository and reproducibility

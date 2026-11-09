@@ -102,3 +102,8 @@ Codex's light edit, approved for inclusion by the user's later instruction to pr
 Clarification supplied at the time: getting a quote does not require confirmation; placing or cancelling an order does. The report retains that distinction. It describes the extraction without turning the original phrase “i moved them” into an unsupported claim of personally executing the code edits. The implementation and test runs were performed with Codex assistance.
 
 After these explanations and edits, the user asked: “please go ahead and do it”. No additional personal explanation or independent test run is attributed for Recommendation 3; its earlier provenance remains unchanged.
+
+
+## Subsequent personal verification - 8 November 2026
+
+The student subsequently ran the experiment and the unchanged suite in Terminal. Screenshot 11 shows 32 tests and 28 failure reports in the temporary candidate, isinstance(True, int) returning True, and an accepted boolean quantity priced at 500 cents. Screenshot 12 shows the unchanged application suite passing all 32 tests in 0.345 seconds. These later runs supersede earlier statements about no personal execution; they do not change the candidate’s origin. The script refreshed evidence/07-quantity-candidate.txt; the prior Codex log is preserved as evidence/07-original-codex-run.txt.

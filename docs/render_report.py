@@ -24,7 +24,7 @@ for page_index, page in enumerate(source.read_text().split('---PAGE---')):
     for block in page.strip().split('\n\n'):
         if block.startswith('| '):
             rows = [[Paragraph(escape(c.strip()), styles['BodyReport']) for c in line.strip('|').split('|')] for line in block.splitlines() if not line.startswith('| ---')]
-            table = Table(rows, colWidths=[85, 35, 45, 30, 329])
+            table = Table(rows, colWidths=[85, 48, 58, 35, 298])
             table.setStyle(TableStyle([('BACKGROUND',(0,0),(-1,0),colors.HexColor('#e4eef4')),('VALIGN',(0,0),(-1,-1),'TOP'),('LINEBELOW',(0,0),(-1,-1),0.3,colors.HexColor('#c9d8e4'))]))
             story.append(table)
             story.append(Spacer(1,7))
